@@ -2,7 +2,7 @@
 
 ## 0.4.0 (2023-02-10)
 
-- Set minimum PHP version to 8.0
+- Set minimum PHP version to 8.1
 - Typed everything
 - Removed 'build' script
 - Updated phpunit to version 10 and updated tests

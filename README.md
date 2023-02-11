@@ -1,7 +1,7 @@
 
 ### Fork
 
-PHP 8.0 or higher required.
+PHP 8.1 or higher required.
 
 **Installation**
 
