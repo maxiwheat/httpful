@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+    bootstrap="tests/bootstrap-server.php"
+    stopOnFailure="true"
+>
+    <coverage>
+        <include>
+            <directory suffix=".php">tests</directory>
+        </include>
+    </coverage>
+    <testsuites>
+        <testsuite name="Httpful">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="WEB_SERVER_HOST" value="localhost" />
+        <env name="WEB_SERVER_PORT" value="1349" />
+        <env name="WEB_SERVER_DOCROOT" value="./static" />
+        <env name="http_proxy" value="" />
+    </php>
+</phpunit>
+

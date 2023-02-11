@@ -6,6 +6,6 @@ namespace Httpful\Exception;
 
 use Exception;
 
-class JsonParseException extends Exception
+class SerializeException extends Exception
 {
 }

@@ -1,7 +1,8 @@
 <?php
 // XML Example from GitHub
 require(__DIR__ . '/../bootstrap.php');
-use \Httpful\Request;
+
+use src\Request;
 
 $uri = 'https://github.com/api/v2/xml/user/show/nategood';
 $request = Request::get($uri)->send();

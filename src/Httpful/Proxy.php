@@ -1,4 +1,5 @@
 <?php
+
 namespace Httpful;
 
 if (!defined('CURLPROXY_SOCKS4')) {

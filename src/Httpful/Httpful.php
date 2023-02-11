@@ -2,45 +2,39 @@
 
 namespace Httpful;
 
-class Httpful {
-    const VERSION = '0.3.0';
+use Httpful\Handlers\MimeHandlerAdapter;
 
-    private static $mimeRegistrar = array();
-    private static $default = null;
+class Httpful
+{
+    const VERSION = '0.4.0';
 
-    /**
-     * @param string $mimeType
-     * @param \Httpful\Handlers\MimeHandlerAdapter $handler
-     */
-    public static function register($mimeType, \Httpful\Handlers\MimeHandlerAdapter $handler)
+    /** @var array<string, MimeHandlerAdapter> */
+    private static array $mimeRegistrar = [];
+    private static ?MimeHandlerAdapter $default = null;
+
+    public static function register(string $mimeType, MimeHandlerAdapter $handler): void
     {
         self::$mimeRegistrar[$mimeType] = $handler;
     }
 
-    /**
-     * @param string $mimeType defaults to MimeHandlerAdapter
-     * @return \Httpful\Handlers\MimeHandlerAdapter
-     */
-    public static function get($mimeType = null)
+    public static function get(?string $mimeType = null): MimeHandlerAdapter
     {
         if (isset(self::$mimeRegistrar[$mimeType])) {
             return self::$mimeRegistrar[$mimeType];
         }
 
         if (empty(self::$default)) {
-            self::$default = new \Httpful\Handlers\MimeHandlerAdapter();
+            self::$default = new MimeHandlerAdapter();
         }
 
         return self::$default;
     }
 
     /**
-     * Does this particular Mime Type have a parser registered
-     * for it?
-     * @param string $mimeType
-     * @return bool
+     * Check if this particular Mime Type
+     * has a parser registered for it.
      */
-    public static function hasParserRegistered($mimeType)
+    public static function hasParserRegistered(string $mimeType): bool
     {
         return isset(self::$mimeRegistrar[$mimeType]);
     }

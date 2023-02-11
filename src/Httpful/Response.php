@@ -2,6 +2,8 @@
 
 namespace Httpful;
 
+use Httpful\Response\Headers;
+
 /**
  * Models an HTTP response
  *
@@ -11,39 +13,31 @@ class Response
 {
 
     public $body,
-           $raw_body,
-           $headers,
-           $raw_headers,
-           $request,
-           $code = 0,
-           $content_type,
-           $parent_type,
-           $charset,
-           $meta_data,
-           $is_mime_vendor_specific = false,
-           $is_mime_personal = false;
+        $raw_body,
+        $headers,
+        $raw_headers,
+        $request,
+        $code = 0,
+        $content_type,
+        $parent_type,
+        $charset,
+        $meta_data,
+        $is_mime_vendor_specific = false,
+        $is_mime_personal = false;
 
-    private $parsers;
-
-    /**
-     * @param string $body
-     * @param string $headers
-     * @param Request $request
-     * @param array $meta_data
-     */
-    public function __construct($body, $headers, Request $request, array $meta_data = array())
+    public function __construct(string $body, string $headers, Request $request, array $meta_data = [])
     {
-        $this->request      = $request;
-        $this->raw_headers  = $headers;
-        $this->raw_body     = $body;
-        $this->meta_data    = $meta_data;
+        $this->request = $request;
+        $this->raw_headers = $headers;
+        $this->raw_body = $body;
+        $this->meta_data = $meta_data;
 
-        $this->code         = $this->_parseCode($headers);
-        $this->headers      = Response\Headers::fromString($headers);
+        $this->code = $this->_parseCode($headers);
+        $this->headers = Headers::fromString($headers);
 
         $this->_interpretHeaders();
 
-        $this->body         = $this->_parse($body);
+        $this->body = $this->_parse($body);
     }
 
     /**
@@ -57,17 +51,14 @@ class Response
      *
      * http://pretty-rfc.herokuapp.com/RFC2616#status.codes
      *
-     * @return bool Did we receive a 4xx or 5xx?
+     * Did we receive a 4xx or 5xx?
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return $this->code >= 400;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasBody()
+    public function hasBody(): bool
     {
         return !empty($this->body);
     }
@@ -76,10 +67,10 @@ class Response
      * Parse the response into a clean data structure
      * (most often an associative array) based on the expected
      * Mime type.
-     * @param string Http response body
+     * @param string $body Http response body
      * @return array|string|object the response parse accordingly
      */
-    public function _parse($body)
+    public function _parse(string $body): mixed
     {
         // If the user decided to forgo the automatic
         // smart parsing, short circuit.
@@ -104,7 +95,7 @@ class Response
                 : $this->parent_type;
         }
 
-       return Httpful::get($parse_with)->parse($body);
+        return Httpful::get($parse_with)->parse($body);
     }
 
     /**
@@ -113,12 +104,12 @@ class Response
      * @param string $headers raw headers
      * @return array parse headers
      */
-    public function _parseHeaders($headers)
+    public function _parseHeaders(string $headers): array
     {
-        return Response\Headers::fromString($headers)->toArray();
+        return Headers::fromString($headers)->toArray();
     }
 
-    public function _parseCode($headers)
+    public function _parseCode(string $headers): int
     {
         $end = strpos($headers, "\r\n");
         if ($end === false) $end = strlen($headers);
@@ -126,6 +117,7 @@ class Response
         if (count($parts) < 2 || !is_numeric($parts[1])) {
             throw new \Exception("Unable to parse response code from HTTP response due to malformed response");
         }
+
         return intval($parts[1]);
     }
 
@@ -133,7 +125,7 @@ class Response
      * After we've parse the headers, let's clean things
      * up a bit and treat some headers specially
      */
-    public function _interpretHeaders()
+    public function _interpretHeaders(): void
     {
         // Parse the Content-Type and charset
         $content_type = isset($this->headers['Content-Type']) ? $this->headers['Content-Type'] : '';
@@ -154,24 +146,21 @@ class Response
         }
 
         // Is vendor type? Is personal type?
-        if (strpos($this->content_type, '/') !== false) {
+        if (str_contains($this->content_type, '/')) {
             list($type, $sub_type) = explode('/', $this->content_type);
-            $this->is_mime_vendor_specific = substr($sub_type, 0, 4) === 'vnd.';
-            $this->is_mime_personal = substr($sub_type, 0, 4) === 'prs.';
+            $this->is_mime_vendor_specific = str_starts_with($sub_type, 'vnd.');
+            $this->is_mime_personal = str_starts_with($sub_type, 'prs.');
         }
 
         // Parent type (e.g. xml for application/vnd.github.message+xml)
         $this->parent_type = $this->content_type;
-        if (strpos($this->content_type, '+') !== false) {
+        if (str_contains($this->content_type, '+')) {
             list($vendor, $this->parent_type) = explode('+', $this->content_type, 2);
             $this->parent_type = Mime::getFullMime($this->parent_type);
         }
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->raw_body;
     }

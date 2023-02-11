@@ -6,10 +6,10 @@ require(__DIR__ . '/../bootstrap.php');
 
 // Example setting a namespace for the XMLHandler parser
 $conf = array('namespace' => 'http://example.com');
-\Httpful\Httpful::register(\Httpful\Mime::XML, new \Httpful\Handlers\XmlHandler($conf));
+src\Httpful::register(src\Mime::XML, new \src\Handlers\XmlHandler($conf));
 
 // We can also add the parsers with our own...
-class SimpleCsvHandler extends \Httpful\Handlers\MimeHandlerAdapter
+class SimpleCsvHandler extends \src\Handlers\MimeHandlerAdapter
 {
     /**
      * Takes a response body, and turns it into
@@ -41,4 +41,4 @@ class SimpleCsvHandler extends \Httpful\Handlers\MimeHandlerAdapter
     }
 }
 
-\Httpful\Httpful::register('text/csv', new SimpleCsvHandler());
+src\Httpful::register('text/csv', new SimpleCsvHandler());

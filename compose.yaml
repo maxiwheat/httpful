@@ -1,0 +1,8 @@
+services:
+  httpful:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: httpful
+    volumes:
+      - .:/src
