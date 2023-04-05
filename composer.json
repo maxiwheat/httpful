@@ -1,7 +1,7 @@
 {
-    "name": "nategood/httpful",
+    "name": "maxiwheat/httpful",
     "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
-    "homepage": "https://github.com/nategood/httpful",
+    "homepage": "https://github.com/maxiwheat/httpful",
     "license": "MIT",
     "keywords": ["http", "curl", "rest", "restful", "api", "requests"],
     "version": "0.4.0",

@@ -7,14 +7,8 @@ PHP 8.1 or higher required.
 
 ```json
 {
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:diagnosia/httpful.git"
-    }
-  ],
   "require": {
-    "nategood/httpful": "^0.4"
+    "maxiwheat/httpful": "^0.4"
   }
 }
 ```
@@ -40,7 +34,7 @@ vendor/bin/phpstan analyse tests
 
 # Httpful
 
-[![Build Status](https://secure.travis-ci.org/nategood/httpful.png?branch=master)](http://travis-ci.org/nategood/httpful) [![Total Downloads](https://poser.pugx.org/nategood/httpful/downloads.png)](https://packagist.org/packages/nategood/httpful)
+[![Total Downloads](https://poser.pugx.org/maxiwheat/httpful/downloads.png)](https://packagist.org/packages/maxiwheat/httpful)
 
 Httpful is a simple Http Client library for PHP 7.2+.  There is an emphasis of readability, simplicity, and flexibility – basically provide the features and flexibility to get the job done and make those features really easy to use.
 
@@ -61,7 +55,7 @@ Here's something to whet your appetite.  Search the twitter API for tweets conta
 ```php
 // Make a request to the GitHub API with a custom
 // header of "X-Trvial-Header: Just as a demo".
-$url = "https://api.github.com/users/nategood";
+$url = "https://api.github.com/users/maxiwheat";
 $response = src\Request::get($url)
     ->expectsJson()
     ->withXTrivialHeader('Just as a demo')
@@ -75,12 +69,12 @@ echo "{$response->body->name} joined GitHub on " .
 
 ## Composer
 
-Httpful is PSR-0 compliant and can be installed using [composer](http://getcomposer.org/).  Simply add `nategood/httpful` to your composer.json file.  _Composer is the sane alternative to PEAR.  It is excellent for managing dependencies in larger projects_.
+Httpful is PSR-0 compliant and can be installed using [composer](http://getcomposer.org/).  Simply add `maxiwheat/httpful` to your composer.json file.  _Composer is the sane alternative to PEAR.  It is excellent for managing dependencies in larger projects_.
 
 ```json
 {
   "require": {
-    "nategood/httpful": "*"
+    "maxiwheat/httpful": "*"
   }
 }
 ```
